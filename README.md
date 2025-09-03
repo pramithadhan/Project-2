@@ -1,2 +1,82 @@
 # Project-2
 Indigitization pilot project
+# Indigitization App Demo (Simple Version)
+# Shows: verify identity -> verify art -> save to blockchain (simulated)
+
+# Simulated blockchain
+blockchain = []
+
+# Users
+users = [
+    {"id": 1, "name": "Alice", "verified": False},
+    {"id": 2, "name": "Bob", "verified": False},
+]
+
+# Art items
+art_items = [
+    {"id": 1, "name": "Dreamtime Painting", "authentic": True},
+    {"id": 2, "name": "Aboriginal Dot Art", "authentic": True},
+    {"id": 3, "name": "Replica Artwork", "authentic": False},
+]
+
+while True:
+    print("\n=== Indigitization App Demo ===")
+    print("1. Show art items")
+    print("2. Verify identity")
+    print("3. Verify art & save to blockchain")
+    print("4. Show blockchain records")
+    print("5. Exit")
+
+    choice = input("Enter choice (1-5): ")
+
+    if choice == "1":
+        for art in art_items:
+            print(f"ID: {art['id']} | Name: {art['name']}")
+
+    elif choice == "2":
+        user_id = int(input("Enter your User ID: "))
+        for user in users:
+            if user["id"] == user_id:
+                user["verified"] = True
+                print(f"{user['name']} is now verified ✅")
+                break
+        else:
+            print("User not found ❌")
+
+    elif choice == "3":
+        user_id = int(input("Enter your User ID: "))
+        art_id = int(input("Enter Art ID: "))
+
+        # Check user verification
+        user = next((u for u in users if u["id"] == user_id), None)
+        if not user or not user["verified"]:
+            print("You must verify your identity first ❌")
+            continue
+
+        # Check art
+        art = next((a for a in art_items if a["id"] == art_id), None)
+        if not art:
+            print("Art not found ❌")
+            continue
+
+        status = "Authentic ✅" if art["authentic"] else "Not Authentic ❌"
+        print(f"{art['name']} verification result: {status}")
+
+        # Save to blockchain
+        blockchain.append({"user": user["name"], "art": art["name"], "status": status})
+        print("Record saved to blockchain 🔗")
+
+    elif choice == "4":
+        print("\n--- Blockchain Records ---")
+        if blockchain:
+            for record in blockchain:
+                print(record)
+        else:
+            print("No records yet 🔗")
+
+    elif choice == "5":
+        print("Thank you for exploring Indigitization App 🌿")
+        break
+
+    else:
+        print("Invalid choice ❌")
